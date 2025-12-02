@@ -13,89 +13,11 @@ A modern, colorful diary/journal web app built with PHP (XAMPP), MySQL, and Tail
 - Upload multiple images/audio per entry
 - Responsive, modern UI with Tailwind components
 
-# Personal-Diary — Diary / Journal Web App
+## Setup (Windows + XAMPP)
+1. Start Apache and MySQL in XAMPP Control Panel.
+2. Create database and tables:
+   - Open phpMyAdmin (http://localhost/phpmyadmin) → Import `schema.sql` from this project.
+3. Copy the project folder under `C:/xampp/htdocs/`.
+4. Visit the app:
+   - `http://localhost/CSE311LBaseline/index.php` (or your base path)
 
-Clean, lightweight diary/journal web application built with PHP, MySQL and a small TailwindCSS front-end. Intended as an educational scaffold (CSE311 project) and a baseline for personal journaling features: authentication, CRUD entries, and media uploads.
-
----
-
-## Table of contents
-- About
-- Key features
-- Tech stack
-- Requirements
-- Quick setup (Windows + XAMPP)
-- Configuration
-- Project structure
-- Security notes
-- License & contact
-
----
-
-## About
-
-This repository contains a simple, modern diary/journal app suitable to run locally on XAMPP. The app supports user accounts, creating and editing diary entries, and attaching images or audio files to an entry.
-
-## Key features
-
-- User registration, authentication and sessions
-- Create, view, edit, and delete diary entries
-- Upload and manage media (images & audio) per entry
-- Responsive UI with Tailwind-based design (via CDN for simplicity)
-
-## Tech stack
-
-- PHP 8+ (designed for XAMPP / Apache)
-- MySQL (importable via provided `schema.sql`)
-- TailwindCSS (via CDN for quick start)
-- PDO with prepared statements for database interaction
-
-## Requirements
-
-- XAMPP (Apache + MySQL)
-- PHP 8 or newer
-- A browser to use the app (Chrome/Edge/Firefox)
-
-## Quick setup (Windows + XAMPP)
-
-1. Start Apache and MySQL from the XAMPP control panel.
-2. Copy this project folder into `C:/xampp/htdocs/`.
-3. Open phpMyAdmin at `http://localhost/phpmyadmin` and import `schema.sql` to create the database and tables.
-4. Configure database credentials if needed (see Configuration below).
-5. Ensure `uploads/` exists and is writable by the web server.
-6. Browse to `http://localhost/CSE311/index.php` (or update the path if you placed the project in a subfolder).
-
-## Configuration
-
-- Edit `config/config.php` (or `config.php` depending on your setup) to update database connection details if you don't use the XAMPP defaults.
-- If serving under a subfolder, adjust any base path / URL settings so links and assets resolve correctly.
-
-## Project structure (important files)
-
-- `index.php` — Login page
-- `signup.php` — New user registration
-- `dashboard.php` — User's entry list / grid
-- `create.php` — Create a new entry and upload media
-- `view.php` — Read a single diary entry with media
-- `edit.php` — Edit an entry and manage media
-- `delete.php` — Remove an entry
-- `logout.php` — End the session
-- `schema.sql` — SQL schema for creating required database tables
-- `config/config.php` — Configuration for database credentials
-- `uploads/` — Directory for uploaded media
-- `assets/` — CSS and JS (theme and small app script)
-- `lib/` and `partials/` — helper libraries and site partials
-
-## Security notes
-
-- Uses PDO prepared statements to avoid SQL injection
-- Passwords stored using `password_hash` / `password_verify`
-- Follow best practices when deploying to production (use HTTPS, strong DB credentials, file upload validation and size limits).
-
-## License
-
-This project is provided for educational use and as a starter scaffold. Adapt and extend it as you need for CSE311 coursework or personal projects.
-
----
-
-If you'd like, I can also add a quick screenshot, example env sample or improve the install guide for deployment.
