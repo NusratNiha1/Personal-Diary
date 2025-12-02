@@ -1,0 +1,92 @@
+/* Theming: Light (default) + Nord Dark scoped by data-theme */
+/* Light theme variables */
+:root{
+  color-scheme: light;
+  --bg-0:#f7fafc; /* base bg */
+  --bg-1:#ffffff; /* surface */
+  --bg-2:#f1f5f9; /* subtle surface */
+  --text:#1f2937; /* gray-800 */
+  --muted:#4b5563; /* gray-600 */
+  --border:#e5e7eb; /* gray-200 */
+  --primary-500:#6366f1;
+  --primary-600:#4f46e5;
+  --primary-700:#4338ca;
+  --ring:rgba(79,70,229,0.35);
+  --ok-green:#16a34a; --ok-yellow:#f59e0b; --ok-red:#ef4444;
+}
+
+/* Nord dark variables */
+[data-theme="dark"]{
+  color-scheme: dark;
+  --bg-0:#2E3440; /* base */
+  --bg-1:#3B4252; /* surface */
+  --bg-2:#434C5E; /* surface 2 */
+  --text:#E5E9F0; /* snow */
+  --muted:#C2C8D2;
+  --border:#434C5E;
+  --primary-500:#88C0D0;
+  --primary-600:#81A1C1;
+  --primary-700:#5E81AC;
+  --ring:rgba(136,192,208,0.35);
+  --ok-green:#A3BE8C; --ok-yellow:#EBCB8B; --ok-red:#BF616A;
+}
+
+html,body{background:var(--bg-0);color:var(--text);} 
+
+/* Backgrounds */
+.gradient-bg{background:linear-gradient(135deg,var(--bg-0) 0%, var(--bg-1) 55%, var(--bg-2) 100%) !important;}
+.glass{background:color-mix(in oklab, var(--bg-1) 80%, transparent) !important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--border) !important;color:var(--text);} 
+
+/* DARK-ONLY utility tweaks for readability */
+[data-theme="dark"] .text-gray-600{color:#CBD3DD !important;}
+[data-theme="dark"] .text-gray-700{color:#E2E6ED !important;}
+[data-theme="dark"] .text-gray-800{color:#F1F4F8 !important;}
+[data-theme="dark"] .text-primary-700{color:var(--primary-500) !important;}
+[data-theme="dark"] .hover\:text-primary-900:hover{color:var(--primary-600) !important;}
+
+/* Button-like light backgrounds adapted for dark */
+[data-theme="dark"] .bg-white\/70{background-color:rgba(236,239,244,0.06) !important;color:#ECEFF4 !important;border:1px solid var(--border);} 
+[data-theme="dark"] .hover\:bg-white\/90:hover{background-color:rgba(236,239,244,0.12) !important;}
+
+/* Primary buttons */
+.bg-primary-600{background-color:var(--primary-600) !important;color:#0b1220;}
+.hover\:bg-primary-700:hover{background-color:var(--primary-700) !important;}
+
+/* Flash message borders */
+[data-theme="dark"] .border-green-200{border-color:color-mix(in oklab, var(--ok-green) 55%, transparent) !important;}
+[data-theme="dark"] .border-yellow-200{border-color:color-mix(in oklab, var(--ok-yellow) 55%, transparent) !important;}
+[data-theme="dark"] .border-red-200{border-color:color-mix(in oklab, var(--ok-red) 55%, transparent) !important;}
+[data-theme="dark"] .border-primary-200{border-color:color-mix(in oklab, var(--primary-500) 55%, transparent) !important;}
+
+/* Forms */
+input,textarea,select{background:var(--bg-1);color:var(--text);border:1px solid var(--border);} 
+input::placeholder,textarea::placeholder{color:var(--muted);} 
+input:focus,textarea:focus,select:focus{outline:2px solid var(--ring);outline-offset:1px;border-color:var(--primary-600);} 
+
+/* Tables & cards */
+.table,.card{background:var(--bg-1);border:1px solid var(--border);color:var(--text);} 
+
+/* Links */
+a{color:var(--primary-600);} 
+a:hover{color:var(--primary-700);} 
+
+/* Masonry (Bento) layout using CSS columns */
+.masonry{column-gap:1.5rem;}
+.masonry-item{break-inside:avoid;display:inline-block;width:100%;margin:0 0 1.5rem;}
+@media (min-width: 640px){ /* sm */
+  .masonry{column-count:2;}
+}
+@media (min-width: 1024px){ /* lg */
+  .masonry{column-count:3;}
+}
+
+/* Toasts */
+.toast{min-width:260px;max-width:380px;border-radius:0.75rem;padding:0.75rem 1rem;border:1px solid var(--border);box-shadow:0 10px 25px rgba(0,0,0,0.25);background:color-mix(in oklab, var(--bg-1) 86%, transparent);color:var(--text);} 
+.toast button.toast-dismiss{opacity:0.7;transition:opacity .2s;background:none;border:none;color:inherit;font-weight:600;cursor:pointer}
+.toast button.toast-dismiss:hover{opacity:1}
+.toast-success{border-color:color-mix(in oklab, var(--ok-green) 60%, transparent);background:color-mix(in oklab, var(--ok-green) 12%, var(--bg-1));}
+.toast-warning{border-color:color-mix(in oklab, var(--ok-yellow) 60%, transparent);background:color-mix(in oklab, var(--ok-yellow) 12%, var(--bg-1));}
+.toast-error{border-color:color-mix(in oklab, var(--ok-red) 60%, transparent);background:color-mix(in oklab, var(--ok-red) 12%, var(--bg-1));}
+.toast-info{border-color:color-mix(in oklab, var(--primary-600) 60%, transparent);background:color-mix(in oklab, var(--primary-600) 12%, var(--bg-1));}
+@keyframes toastIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.toast-enter{animation:toastIn .25s ease-out both}
