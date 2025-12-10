@@ -36,10 +36,28 @@ include __DIR__ . '/partials/head.php';
         <label class="block text-sm text-gray-700 mb-1">Username</label>
         <input type="text" name="username" required class="w-full rounded-2xl px-4 py-3 bg-white/70 focus:bg-white outline-none border border-primary-100 focus:border-primary-400 shadow-sm transition" />
       </div>
-      <div>
-        <label class="block text-sm text-gray-700 mb-1">Password</label>
-        <input type="password" name="password" required class="w-full rounded-2xl px-4 py-3 bg-white/70 focus:bg-white outline-none border border-primary-100 focus:border-primary-400 shadow-sm transition" />
-      </div>
+     <div>
+  <label class="block text-sm text-gray-700 mb-1">Password</label>
+  <div class="relative">
+    <input 
+      type="password" 
+      id="password"
+      name="password" 
+      required 
+      class="w-full rounded-2xl px-4 py-3 bg-white/70 focus:bg-white outline-none border border-primary-100 focus:border-primary-400 shadow-sm transition"
+    />
+    
+    <!-- Eye icon -->
+    <span 
+      onclick="togglePassword()" 
+      class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500">
+      👀
+    </span>
+  </div>
+</div>
+      <p class="text-sm text-gray-600 mt-2">
+         <a href="forgot_password.php" class="text-primary-700 hover:underline">Forgot Password?</a>
+     </p>
       <button type="submit" class="w-full rounded-2xl bg-primary-600 hover:bg-primary-700 text-white py-3 shadow-lg transition">Log In</button>
     </form>
     <p class="text-sm text-gray-600 mt-4">Don't have an account? <a class="text-primary-700 hover:underline" href="signup.php">Sign up</a></p>

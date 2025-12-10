@@ -46,16 +46,56 @@ include __DIR__ . '/partials/head.php';
         <input type="text" name="username" required minlength="3" class="w-full rounded-2xl px-4 py-3 bg-white/70 focus:bg-white outline-none border border-primary-100 focus:border-primary-400 shadow-sm transition" />
       </div>
       <div>
-        <label class="block text-sm text-gray-700 mb-1">Password</label>
-        <input type="password" name="password" required minlength="6" class="w-full rounded-2xl px-4 py-3 bg-white/70 focus:bg-white outline-none border border-primary-100 focus:border-primary-400 shadow-sm transition" />
-      </div>
-      <div>
-        <label class="block text-sm text-gray-700 mb-1">Confirm Password</label>
-        <input type="password" name="confirm" required minlength="6" class="w-full rounded-2xl px-4 py-3 bg-white/70 focus:bg-white outline-none border border-primary-100 focus:border-primary-400 shadow-sm transition" />
-      </div>
+  <label class="block text-sm text-gray-700 mb-1">Password</label>
+  <div class="relative">
+    <input 
+      type="password" 
+      id="password"
+      name="password" 
+      required 
+      minlength="6"
+      class="w-full rounded-2xl px-4 py-3 bg-white/70 focus:bg-white outline-none 
+             border border-primary-100 focus:border-primary-400 shadow-sm transition"
+    />
+    <span 
+      onclick="togglePassword('password')" 
+      class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 text-xl">
+      👀
+    </span>
+  </div>
+</div>
+
+<div>
+  <label class="block text-sm text-gray-700 mb-1">Confirm Password</label>
+  <div class="relative">
+    <input 
+      type="password" 
+      id="confirm"
+      name="confirm" 
+      required 
+      minlength="6"
+      class="w-full rounded-2xl px-4 py-3 bg-white/70 focus:bg-white outline-none 
+             border border-primary-100 focus:border-primary-400 shadow-sm transition"
+    />
+    <span 
+      onclick="togglePassword('confirm')" 
+      class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 text-xl">
+      👀
+    </span>
+  </div>
+</div>
+
       <button type="submit" class="w-full rounded-2xl bg-primary-600 hover:bg-primary-700 text-white py-3 shadow-lg transition">Sign Up</button>
     </form>
     <p class="text-sm text-gray-600 mt-4">Already have an account? <a class="text-primary-700 hover:underline" href="index.php">Log in</a></p>
   </div>
 </div>
+
+<script>
+function togglePassword(id) {
+  const input = document.getElementById(id);
+  input.type = input.type === "password" ? "text" : "password";
+}
+</script>
+
 <?php include __DIR__ . '/partials/footer.php'; ?>

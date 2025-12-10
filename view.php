@@ -1,3 +1,4 @@
+
 <?php
 require_once __DIR__ . '/lib/auth.php';
 require_once __DIR__ . '/lib/utils.php';
@@ -36,6 +37,7 @@ include __DIR__ . '/partials/head.php';
       </div>
     </div>
 
+    <!-- MEDIA DISPLAY SECTION -->
     <?php if (!empty($media)): ?>
       <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <?php foreach ($media as $m): ?>
@@ -49,6 +51,18 @@ include __DIR__ . '/partials/head.php';
             </div>
           <?php endif; ?>
         <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+
+    <!-- NEW MUSIC LINK SECTION -->
+    <?php if (!empty($entry['music_link'])): ?>
+      <div class="mt-6">
+        <a href="<?php echo e($entry['music_link']); ?>" target="_blank">
+          <button class="px-5 py-2 bg-green-600 text-white rounded-xl shadow hover:bg-green-700 transition">
+            ▶ Play Music
+          </button>
+        </a>
+        <!-- This is the new section I added to display music links -->
       </div>
     <?php endif; ?>
 
