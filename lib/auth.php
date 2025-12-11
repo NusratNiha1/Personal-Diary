@@ -44,7 +44,7 @@ function login_user(string $username, string $password): bool {
     return false;
 }
 
-function register_user(string $username, string $password, string $security_question = '', string $security_answer = ''): array {
+function register_user(string $username, string $password, string $email = '', string $security_question = '', string $security_answer = ''): array {
     $pdo = get_pdo();
     // Ensure unique username
     $exists = $pdo->prepare('SELECT 1 FROM users WHERE username = ?');
@@ -52,11 +52,21 @@ function register_user(string $username, string $password, string $security_ques
     if ($exists->fetchColumn()) {
         return [false, 'Username already taken'];
     }
+    
+    // Ensure unique email if provided
+    if (!empty($email)) {
+        $email_exists = $pdo->prepare('SELECT 1 FROM users WHERE email = ?');
+        $email_exists->execute([$email]);
+        if ($email_exists->fetchColumn()) {
+            return [false, 'Email already registered'];
+        }
+    }
+    
     $answer = !empty($security_answer) ? strtolower(trim($security_answer)) : null;
     
-    $stmt = $pdo->prepare('INSERT INTO users (username, password, security_question, security_answer) VALUES (?, ?, ?, ?)');
+    $stmt = $pdo->prepare('INSERT INTO users (username, email, password, security_question, security_answer) VALUES (?, ?, ?, ?, ?)');
     try {
-        $stmt->execute([$username, $password, $security_question, $answer]);
+        $stmt->execute([$username, $email ?: null, $password, $security_question, $answer]);
         return [true, null];
     } catch (Throwable $e) {
         return [false, 'Failed to create user'];

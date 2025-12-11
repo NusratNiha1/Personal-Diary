@@ -9,21 +9,24 @@ if (is_logged_in()) {
 $error = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $username = trim($_POST['username'] ?? '');
+  $email = trim($_POST['email'] ?? '');
   $password = trim($_POST['password'] ?? '');
   $confirm  = trim($_POST['confirm'] ?? '');
   $security_question = trim($_POST['security_question'] ?? '');
   $security_answer = trim($_POST['security_answer'] ?? '');
 
-  if ($username === '' || $password === '' || $confirm === '' || $security_question === '' || $security_answer === '') {
+  if ($username === '' || $email === '' || $password === '' || $confirm === '' || $security_question === '' || $security_answer === '') {
     $error = 'Please fill out all fields';
   } elseif (strlen($username) < 3) {
     $error = 'Username must be at least 3 characters';
+  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $error = 'Please enter a valid email address';
   } elseif (strlen($password) < 6) {
     $error = 'Password must be at least 6 characters';
   } elseif ($password !== $confirm) {
     $error = 'Passwords do not match';
   } else {
-    [$ok, $msg] = register_user($username, $password, $security_question, $security_answer);
+    [$ok, $msg] = register_user($username, $password, $email, $security_question, $security_answer);
     if ($ok) {
       flash('Account created! Please log in.', 'success');
       redirect('index.php');
@@ -46,6 +49,10 @@ include __DIR__ . '/partials/head.php';
       <div>
         <label class="block text-sm text-gray-700 mb-1">Username</label>
         <input type="text" name="username" required minlength="3" class="w-full rounded-2xl px-4 py-3 bg-white/70 focus:bg-white outline-none border border-primary-100 focus:border-primary-400 shadow-sm transition" />
+      </div>
+      <div>
+        <label class="block text-sm text-gray-700 mb-1">Email</label>
+        <input type="email" name="email" required class="w-full rounded-2xl px-4 py-3 bg-white/70 focus:bg-white outline-none border border-primary-100 focus:border-primary-400 shadow-sm transition" />
       </div>
       <div>
         <label class="block text-sm text-gray-700 mb-1">Password</label>
