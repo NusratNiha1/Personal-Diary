@@ -10,7 +10,7 @@ $base = rtrim(app_base_url(), '/');
       <!-- Fancy Logo -->
       <a href="<?php echo e($base); ?>/dashboard.php" class="flex items-center gap-3 hover:opacity-90 transition group no-underline">
         <!-- Logo Icon with gradient and artistic elements -->
-        <div class="relative w-12 h-12 flex items-center justify-center">
+        <div class="relative w-12 h-12 flex items-center rounded-lg justify-center">
           <div class="relative bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg w-10 h-10 flex items-center justify-center text-white text-xl font-bold shadow-lg">
             <i class="fas fa-palette"></i>
           </div>
