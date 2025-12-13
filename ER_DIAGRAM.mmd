@@ -1,0 +1,229 @@
+erDiagram
+    %% Life Canvas - Personal Diary Application ER Diagram
+    %% Database Management System Project
+    
+    %% ========================================
+    %% USER MANAGEMENT MODULE
+    %% ========================================
+    
+    roles ||--o{ users : "has"
+    roles {
+        int role_id PK
+        varchar role_name UK
+        text description
+        timestamp created_at
+    }
+    
+    users ||--o{ entries : "creates"
+    users ||--o{ user_sessions : "has"
+    users ||--o{ user_stats : "has"
+    users ||--o{ mood_history : "tracks"
+    users ||--o{ shared_entries_as_sharer : "shares"
+    users ||--o{ shared_entries_as_receiver : "receives"
+    users ||--o{ comments : "writes"
+    users ||--o{ reactions : "reacts"
+    users ||--o{ followers_as_follower : "follows"
+    users ||--o{ followers_as_following : "followed_by"
+    users ||--o{ categories : "creates_custom"
+    users {
+        int user_id PK
+        varchar username UK
+        varchar full_name
+        varchar email UK
+        date date_of_birth
+        varchar profile_pic
+        text bio
+        varchar password
+        varchar security_question
+        varchar security_answer
+        int role_id FK
+        json preferences
+        boolean is_active
+        timestamp created_at
+        timestamp last_login
+    }
+    
+    permissions ||--o{ role_permissions : "assigned_to"
+    permissions {
+        int permission_id PK
+        varchar permission_name UK
+        text description
+    }
+    
+    roles ||--o{ role_permissions : "includes"
+    role_permissions {
+        int role_id PK_FK
+        int permission_id PK_FK
+    }
+    
+    user_sessions {
+        int session_id PK
+        int user_id FK
+        timestamp login_time
+        timestamp logout_time
+        varchar ip_address
+        text user_agent
+    }
+    
+    %% ========================================
+    %% CONTENT MANAGEMENT MODULE
+    %% ========================================
+    
+    categories ||--o{ entries : "categorizes"
+    categories {
+        int category_id PK
+        varchar category_name UK
+        text description
+        varchar color
+        varchar icon
+        int user_id FK
+        timestamp created_at
+    }
+    
+    entries ||--o{ entry_tags : "tagged_with"
+    entries ||--o{ media : "contains"
+    entries ||--o{ entry_versions : "versioned_as"
+    entries ||--|| entry_stats : "tracked_by"
+    entries ||--o{ shared_entries : "shared_as"
+    entries ||--o{ comments : "has"
+    entries ||--o{ reactions : "receives"
+    entries {
+        int entry_id PK
+        int user_id FK
+        int category_id FK
+        varchar title
+        text content
+        enum mood
+        varchar music_link
+        varchar location
+        varchar weather
+        enum privacy_level
+        boolean is_favorite
+        int word_count
+        int version_number
+        timestamp timestamp
+        boolean is_deleted
+        timestamp deleted_at
+    }
+    
+    tags ||--o{ entry_tags : "applied_to"
+    tags {
+        int tag_id PK
+        varchar tag_name UK
+        int usage_count
+        timestamp created_at
+    }
+    
+    entry_tags {
+        int entry_id PK_FK
+        int tag_id PK_FK
+        timestamp tagged_at
+    }
+    
+    media {
+        int media_id PK
+        int entry_id FK
+        enum media_type
+        varchar file_path
+        bigint file_size
+        timestamp uploaded_at
+    }
+    
+    entry_versions {
+        int version_id PK
+        int entry_id FK
+        int version_number
+        varchar title
+        text content
+        timestamp changed_at
+    }
+    
+    %% ========================================
+    %% SOCIAL FEATURES MODULE
+    %% ========================================
+    
+    shared_entries {
+        int share_id PK
+        int entry_id FK
+        int shared_by FK
+        int shared_with FK
+        boolean can_comment
+        timestamp shared_at
+    }
+    
+    comments ||--o{ comments : "replies_to"
+    comments {
+        int comment_id PK
+        int entry_id FK
+        int user_id FK
+        int parent_id FK
+        text content
+        timestamp created_at
+    }
+    
+    reactions {
+        int reaction_id PK
+        int entry_id FK
+        int user_id FK
+        enum reaction_type
+        timestamp reacted_at
+    }
+    
+    followers {
+        int follow_id PK
+        int follower_id FK
+        int following_id FK
+        timestamp followed_at
+    }
+    
+    %% ========================================
+    %% ANALYTICS & TRACKING MODULE
+    %% ========================================
+    
+    entry_stats {
+        int stat_id PK
+        int entry_id FK_UK
+        int view_count
+        int share_count
+        int comment_count
+        int reaction_count
+        timestamp updated_at
+    }
+    
+    user_stats {
+        int stat_id PK
+        int user_id FK_UK
+        int total_entries
+        int total_words
+        decimal avg_words_per_entry
+        varchar most_common_mood
+        date last_entry_date
+        int current_streak
+        int longest_streak
+        timestamp updated_at
+    }
+    
+    mood_history {
+        int history_id PK
+        int user_id FK
+        varchar mood
+        int entry_count
+        date entry_date
+    }
+    
+    %% ========================================
+    %% AUDIT & LOGGING MODULE
+    %% ========================================
+    
+    users ||--o{ audit_log : "performed_by"
+    audit_log {
+        int log_id PK
+        int user_id FK
+        enum action_type
+        varchar table_name
+        int record_id
+        json old_values
+        json new_values
+        varchar ip_address
+        timestamp timestamp
+    }
