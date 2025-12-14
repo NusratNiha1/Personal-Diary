@@ -140,21 +140,7 @@ CREATE TABLE shared_entries (
   UNIQUE KEY unique_share (entry_id, shared_with)
 ) ENGINE=InnoDB;
 
--- Comments on entries
-CREATE TABLE comments (
-  comment_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  entry_id INT UNSIGNED NOT NULL,
-  user_id INT UNSIGNED NOT NULL,
-  comment_text TEXT NOT NULL,
-  parent_comment_id INT UNSIGNED NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT fk_comments_entry FOREIGN KEY (entry_id) REFERENCES entries(entry_id) ON DELETE CASCADE,
-  CONSTRAINT fk_comments_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-  CONSTRAINT fk_comments_parent FOREIGN KEY (parent_comment_id) REFERENCES comments(comment_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
-
--- Reactions/Likes
+CREATE TABLE reactions (
 CREATE TABLE reactions (
   reaction_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   entry_id INT UNSIGNED NOT NULL,
@@ -166,19 +152,7 @@ CREATE TABLE reactions (
   UNIQUE KEY unique_reaction (entry_id, user_id)
 ) ENGINE=InnoDB;
 
--- Followers system
-CREATE TABLE followers (
-  follower_id INT UNSIGNED,
-  following_id INT UNSIGNED,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (follower_id, following_id),
-  CONSTRAINT fk_follower FOREIGN KEY (follower_id) REFERENCES users(user_id) ON DELETE CASCADE,
-  CONSTRAINT fk_following FOREIGN KEY (following_id) REFERENCES users(user_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
-
--- ======================
--- 8. STATISTICS (Simplified - no triggers, will be updated via PHP)
--- ======================
+CREATE TABLE entry_stats (
 
 -- Entry statistics
 CREATE TABLE entry_stats (
@@ -186,7 +160,6 @@ CREATE TABLE entry_stats (
   entry_id INT UNSIGNED NOT NULL UNIQUE,
   view_count INT UNSIGNED DEFAULT 0,
   share_count INT UNSIGNED DEFAULT 0,
-  comment_count INT UNSIGNED DEFAULT 0,
   reaction_count INT UNSIGNED DEFAULT 0,
   last_viewed TIMESTAMP NULL,
   CONSTRAINT fk_stats_entry FOREIGN KEY (entry_id) REFERENCES entries(entry_id) ON DELETE CASCADE
@@ -232,9 +205,7 @@ SELECT
     COALESCE(us.total_words, 0) AS total_words,
     COALESCE(us.current_streak, 0) AS current_streak,
     us.most_common_mood,
-    us.last_entry_date,
-    (SELECT COUNT(*) FROM followers WHERE follower_id = u.user_id) AS following_count,
-    (SELECT COUNT(*) FROM followers WHERE following_id = u.user_id) AS follower_count
+    us.last_entry_date
 FROM users u
 LEFT JOIN user_stats us ON u.user_id = us.user_id;
 
@@ -264,7 +235,6 @@ SELECT
     (SELECT COUNT(*) FROM media WHERE entry_id = e.entry_id) AS media_count,
     COALESCE(es.view_count, 0) AS view_count,
     COALESCE(es.share_count, 0) AS share_count,
-    COALESCE(es.comment_count, 0) AS comment_count,
     COALESCE(es.reaction_count, 0) AS reaction_count
 FROM entries e
 JOIN users u ON e.user_id = u.user_id
@@ -375,14 +345,13 @@ INSERT INTO user_stats (user_id, total_entries, total_words, current_streak, lon
 (7, 2, 22, 1, 2, 11.00, 'Happy', '2024-08-15'),
 (8, 2, 25, 1, 1, 12.50, 'Excited', '2024-09-10');
 
--- Initialize entry stats
-INSERT INTO entry_stats (entry_id, view_count, share_count, comment_count, reaction_count) VALUES
-(1, 5, 0, 0, 0), (2, 12, 1, 0, 2), (3, 25, 3, 1, 5),
-(4, 8, 0, 0, 1), (5, 6, 0, 0, 0), (6, 18, 2, 0, 3),
-(7, 15, 1, 0, 2), (8, 7, 0, 0, 0), (9, 10, 0, 0, 1),
-(10, 22, 2, 1, 4), (11, 30, 3, 2, 6), (12, 9, 0, 0, 1),
-(13, 5, 0, 0, 0), (14, 20, 2, 0, 3), (15, 16, 1, 0, 2),
-(16, 8, 0, 0, 1), (17, 35, 4, 2, 7), (18, 11, 0, 0, 1);
+INSERT INTO entry_stats (entry_id, view_count, share_count, reaction_count) VALUES
+(1, 5, 0, 0), (2, 12, 1, 2), (3, 25, 3, 5),
+(4, 8, 0, 1), (5, 6, 0, 0), (6, 18, 2, 3),
+(7, 15, 1, 2), (8, 7, 0, 0), (9, 10, 0, 1),
+(10, 22, 2, 4), (11, 30, 3, 6), (12, 9, 0, 1),
+(13, 5, 0, 0), (14, 20, 2, 3), (15, 16, 1, 2),
+(16, 8, 0, 1), (17, 35, 4, 7), (18, 11, 0, 1);
 
 -- Initialize mood history
 INSERT INTO mood_history (user_id, mood, entry_date, entry_count) VALUES
