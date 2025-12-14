@@ -141,7 +141,6 @@ CREATE TABLE shared_entries (
 ) ENGINE=InnoDB;
 
 CREATE TABLE reactions (
-CREATE TABLE reactions (
   reaction_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   entry_id INT UNSIGNED NOT NULL,
   user_id INT UNSIGNED NOT NULL,
@@ -151,8 +150,6 @@ CREATE TABLE reactions (
   CONSTRAINT fk_reactions_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   UNIQUE KEY unique_reaction (entry_id, user_id)
 ) ENGINE=InnoDB;
-
-CREATE TABLE entry_stats (
 
 -- Entry statistics
 CREATE TABLE entry_stats (
