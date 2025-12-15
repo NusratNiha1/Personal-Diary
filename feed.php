@@ -56,7 +56,6 @@ $sql = "
     c.color as category_color,
     c.icon as category_icon,
     (SELECT COUNT(*) FROM reactions WHERE entry_id = e.entry_id) as reaction_count,
-    (SELECT COUNT(*) FROM comments WHERE entry_id = e.entry_id) as comment_count,
     (SELECT COUNT(*) FROM reactions WHERE entry_id = e.entry_id AND user_id = ?) as user_reacted
   FROM entries e
   LEFT JOIN users u ON e.user_id = u.user_id
@@ -211,9 +210,6 @@ include __DIR__ . '/partials/head.php';
             </div>
 
             <div class="flex items-center gap-2">
-              <a href="<?php echo e(app_base_url()); ?>/view.php?id=<?php echo $e['entry_id']; ?>" class="px-4 py-2 rounded-full bg-primary-100 hover:bg-primary-200 dark:bg-primary-900/30 dark:hover:bg-primary-900/50 text-primary-700 dark:text-primary-300 font-medium transition text-sm">
-                <i class="fas fa-book-open mr-2"></i>Read Post
-              </a>
               <?php if ($isOwnPost): ?>
                 <a href="<?php echo e(app_base_url()); ?>/edit.php?id=<?php echo $e['entry_id']; ?>" class="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium transition text-sm">
                   <i class="fas fa-edit"></i>
